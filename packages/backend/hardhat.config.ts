@@ -62,6 +62,12 @@ const config: HardhatUserConfig = {
     // L2 NETWORKS
     /////////
 
+    testnet_bitfinity: {
+      url: 'https://testnet.bitfinity.network',
+      accounts: [`0x${process.env.PRIVATE_KEY}`],
+      chainId: 355113,
+    },
+
     // polygon: {
     //   chainId: 137,
     //   url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`,
