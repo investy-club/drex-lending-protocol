@@ -8,7 +8,11 @@ const main: DeployFunction = async function ({
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  const args = ['0xE6520dC955DD9388C221ca3fA8704dCF6a78AAf6', 'ipfs://', 2];
+  const args = [
+    '0xE6520dC955DD9388C221ca3fA8704dCF6a78AAf6',
+    'https://lh3.googleusercontent.com/drive-viewer/AITFw-zs49zXxYyFufykDSkwlTtNeLtd7VuL6SpXjftUmqIPlmbHDPDGCDSdIwHKqDAliuHG8mqtZjJSglK4_hus_S3CtKgZsQ=s1600',
+    2,
+  ];
   const creDrexKYCBadge = await deploy('CreDrexKYCBadge', {
     args: args,
     from: deployer,

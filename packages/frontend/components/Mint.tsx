@@ -4,7 +4,7 @@ import contracts from '../contracts/hardhat_contracts.json';
 import { NETWORK_ID } from '../config';
 import { Button, Spinner, Text } from 'grommet';
 
-const Mint = () => {
+const Mint = ({ setIsMinted }: { setIsMinted: (minted: boolean) => void }) => {
   const { address } = useAccount();
   const [signature, setSignature] = useState('');
   const [hash, setHash] = useState('');
@@ -44,6 +44,12 @@ const Mint = () => {
     }
   }, [address]);
 
+  useEffect(() => {
+    if (isSuccessMint) {
+      setIsMinted(true);
+    }
+  }, [isSuccessMint]);
+
   if (isError) {
     console.log(error);
     return <Text>Error: only one wallet can be linked with one ID</Text>;
@@ -51,9 +57,7 @@ const Mint = () => {
 
   return (
     <>
-      {isSuccessMint ? (
-        <Text>Minted</Text>
-      ) : isLoading || isLoadingMintTx ? (
+      {isLoading || isLoadingMintTx ? (
         <Spinner />
       ) : (
         <Button
