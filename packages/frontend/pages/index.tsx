@@ -10,7 +10,7 @@ import { NETWORK_ID } from '../config';
 import { useEffect, useState } from 'react';
 import contracts from '../contracts/hardhat_contracts.json';
 import KYC from '@/components/KYC';
-import { parseUnits } from 'viem';
+import { formatEther, parseUnits } from 'viem';
 
 export default function Home() {
   const { address } = useAccount();
@@ -24,6 +24,71 @@ export default function Home() {
     abi: contracts[NETWORK_ID][0].contracts.CreDrexKYCBadge.abi,
     functionName: 'balanceOf',
     args: [address],
+    watch: true,
+  });
+
+  const { data: dataDepositRate } = useContractRead({
+    // @ts-ignore
+    address: contracts[NETWORK_ID][0].contracts.CreDrex.address,
+    // @ts-ignore
+    abi: contracts[NETWORK_ID][0].contracts.CreDrex.abi,
+    functionName: '_depositRate',
+    watch: true,
+  });
+
+  const { data: dataBorrowRate } = useContractRead({
+    // @ts-ignore
+    address: contracts[NETWORK_ID][0].contracts.CreDrex.address,
+    // @ts-ignore
+    abi: contracts[NETWORK_ID][0].contracts.CreDrex.abi,
+    functionName: '_borrowRate',
+    watch: true,
+  });
+
+  const { data: dataTotalBorrowed } = useContractRead({
+    // @ts-ignore
+    address: contracts[NETWORK_ID][0].contracts.CreDrex.address,
+    // @ts-ignore
+    abi: contracts[NETWORK_ID][0].contracts.CreDrex.abi,
+    functionName: 'totalBorrowed',
+    watch: true,
+  });
+
+  const { data: dataTotalDeposited } = useContractRead({
+    // @ts-ignore
+    address: contracts[NETWORK_ID][0].contracts.CreDrex.address,
+    // @ts-ignore
+    abi: contracts[NETWORK_ID][0].contracts.CreDrex.abi,
+    functionName: 'totalDeposit',
+    watch: true,
+  });
+
+  const { data: dataUsersBorrowed } = useContractRead({
+    // @ts-ignore
+    address: contracts[NETWORK_ID][0].contracts.CreDrex.address,
+    // @ts-ignore
+    abi: contracts[NETWORK_ID][0].contracts.CreDrex.abi,
+    functionName: 'usersBorrowed',
+    args: [address],
+    watch: true,
+  });
+
+  const { data: dataUsersDeposited } = useContractRead({
+    // @ts-ignore
+    address: contracts[NETWORK_ID][0].contracts.CreDrex.address,
+    // @ts-ignore
+    abi: contracts[NETWORK_ID][0].contracts.CreDrex.abi,
+    functionName: 'usersDeposited',
+    args: [address],
+    watch: true,
+  });
+
+  const { data: dataTotalReserve } = useContractRead({
+    // @ts-ignore
+    address: contracts[NETWORK_ID][0].contracts.CreDrex.address,
+    // @ts-ignore
+    abi: contracts[NETWORK_ID][0].contracts.CreDrex.abi,
+    functionName: 'totalReserve',
     watch: true,
   });
 
@@ -105,80 +170,114 @@ export default function Home() {
           <Text>Not connected</Text>
         ) : isMinted ? (
           <Box gap="large">
-            <Box gap="medium">
-              <TextInput
-                placeholder="Amount"
-                onChange={(e) => setAmount(Number(e.target.value))}
-              />
-              <Button
-                primary
-                label="Approve"
-                onClick={() =>
-                  writeApprove({
-                    args: [
-                      // @ts-ignore
-                      contracts[NETWORK_ID][0].contracts.CreDrex.address,
-                      parseUnits(amount.toString(), 18),
-                    ],
-                    // @ts-ignore
-                    from: address,
-                  })
-                }
-              />
+            <Box>
+              <Text>
+                Protocol Reserve:{' '}
+                {dataTotalReserve ? formatEther(dataTotalReserve as any) : '0'}
+              </Text>
+              <Text>
+                Protocol Deposited:{' '}
+                {dataTotalDeposited
+                  ? formatEther(dataTotalDeposited as any)
+                  : '0'}
+              </Text>
+              <Text>
+                Protocol Borrowed:{' '}
+                {dataTotalBorrowed
+                  ? formatEther(dataTotalBorrowed as any)
+                  : '0'}
+              </Text>
+              <Text>
+                Your deposit{' '}
+                {dataUsersDeposited
+                  ? formatEther(dataUsersDeposited as any)
+                  : '0'}
+              </Text>
+              <Text>
+                Your borrow{' '}
+                {dataUsersBorrowed
+                  ? formatEther(dataUsersBorrowed as any)
+                  : '0'}
+              </Text>
             </Box>
-            <Box direction="row" gap="xlarge">
-              <Box gap="medium" align="center">
-                <Heading>Lending</Heading>
-                <Box direction="row" gap="medium">
-                  <Button
-                    primary
-                    label="Deposit"
-                    onClick={() =>
-                      writeDeposit({
-                        args: [parseUnits(amount.toString(), 18)],
+            <Box gap="large">
+              <Box gap="medium">
+                <TextInput
+                  placeholder="Amount"
+                  onChange={(e) => setAmount(Number(e.target.value))}
+                />
+                <Button
+                  primary
+                  label="Approve"
+                  onClick={() =>
+                    writeApprove({
+                      args: [
                         // @ts-ignore
-                        from: address,
-                      })
-                    }
-                  />
-                  <Button
-                    primary
-                    label="Withdraw"
-                    onClick={() =>
-                      writeWithdraw({
-                        args: [parseUnits(amount.toString(), 18)],
-                        // @ts-ignore
-                        from: address,
-                      })
-                    }
-                  />
-                </Box>
+                        contracts[NETWORK_ID][0].contracts.CreDrex.address,
+                        parseUnits(amount.toString(), 18),
+                      ],
+                      // @ts-ignore
+                      from: address,
+                    })
+                  }
+                />
               </Box>
-              <Box gap="medium" align="center">
-                <Heading>Borrowing</Heading>
-                <Box direction="row" gap="medium">
-                  <Button
-                    primary
-                    label="Borrow"
-                    onClick={() =>
-                      writeBorrow({
-                        args: [parseUnits(amount.toString(), 18)],
-                        // @ts-ignore
-                        from: address,
-                      })
-                    }
-                  />
-                  <Button
-                    primary
-                    label="Repay"
-                    onClick={() =>
-                      writeRepay({
-                        args: [parseUnits(amount.toString(), 18)],
-                        // @ts-ignore
-                        from: address,
-                      })
-                    }
-                  />
+              <Box direction="row" gap="xlarge">
+                <Box gap="medium" align="center">
+                  <Heading>Lending</Heading>
+                  <Text>{formatEther(dataDepositRate as any)} APY</Text>
+                  <Box direction="row" gap="medium">
+                    <Button
+                      primary
+                      label="Deposit"
+                      onClick={() =>
+                        writeDeposit({
+                          args: [parseUnits(amount.toString(), 18)],
+                          // @ts-ignore
+                          from: address,
+                        })
+                      }
+                    />
+                    <Button
+                      primary
+                      label="Withdraw"
+                      onClick={() =>
+                        writeWithdraw({
+                          args: [parseUnits(amount.toString(), 18)],
+                          // @ts-ignore
+                          from: address,
+                        })
+                      }
+                    />
+                  </Box>
+                </Box>
+                <Box gap="medium" align="center">
+                  <Heading>Borrowing</Heading>
+                  <Text>{formatEther(dataBorrowRate as any)} Fee</Text>
+                  <Box direction="row" gap="medium">
+                    <Button
+                      primary
+                      label="Borrow"
+                      onClick={() =>
+                        writeBorrow({
+                          args: [parseUnits(amount.toString(), 18)],
+                          // @ts-ignore
+                          from: address,
+                        })
+                      }
+                    />
+                    <Button
+                      primary
+                      label="Repay"
+                      onClick={() =>
+                        writeRepay({
+                          args: [parseUnits(amount.toString(), 18)],
+                          // @ts-ignore
+                          from: address,
+                        })
+                      }
+                    />
+                  </Box>
                 </Box>
               </Box>
             </Box>

@@ -17,8 +17,8 @@ contract CreDrex is MathUtil {
     uint256 public baseRate = 20000000000000000;
     uint256 public fixedAnnuBorrowRate = 300000000000000000;
 
-    mapping(address => uint256) private usersBorrowed;
-    mapping(address => uint256) private usersDeposited;
+    mapping(address => uint256) public usersBorrowed;
+    mapping(address => uint256) public usersDeposited;
 
     constructor(address _wBRLAddress, address _creDrexKYCBadgeAddress) {
         wBRL = WrappedBRL(_wBRLAddress);
