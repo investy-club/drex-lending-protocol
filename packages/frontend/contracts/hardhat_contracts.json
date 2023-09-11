@@ -5,7 +5,7 @@
       "chainId": "355113",
       "contracts": {
         "CreDrex": {
-          "address": "0x7Fd3a324b0874d1C55eeC0efa18EAed92409B236",
+          "address": "0xD0b7aab986ccCcD360248894718ACAc92cf23a85",
           "abi": [
             {
               "inputs": [

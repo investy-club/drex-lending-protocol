@@ -61,8 +61,8 @@ contract CreDrex is MathUtil {
         require(usersBorrowed[msg.sender] > 0, "Doesnt have a debt to pay");
         wBRL.transferFrom(msg.sender, address(this), _amount);
         (uint256 fee, uint256 paid) = calculateBorrowFee(_amount);
-        usersBorrowed[msg.sender] -= paid;
-        totalBorrowed -= paid;
+        usersBorrowed[msg.sender] -= _amount;
+        totalBorrowed -= _amount;
         totalReserve += fee;
     }
 

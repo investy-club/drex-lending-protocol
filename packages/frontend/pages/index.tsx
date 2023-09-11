@@ -228,7 +228,7 @@ export default function Home() {
                   <Text>
                     {dataDepositRate
                       ? formatEther(dataDepositRate as any)
-                      : '0'}{' '}
+                      : '0'}
                     APY
                   </Text>
                   <Box direction="row" gap="medium">
@@ -258,7 +258,10 @@ export default function Home() {
                 </Box>
                 <Box gap="medium" align="center">
                   <Heading>Borrowing</Heading>
-                  <Text>{formatEther(dataBorrowRate as any)} Fee</Text>
+                  <Text>
+                    {dataBorrowRate ? formatEther(dataBorrowRate as any) : '0'}
+                    Fee
+                  </Text>
                   <Box direction="row" gap="medium">
                     <Button
                       primary
