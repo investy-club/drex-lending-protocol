@@ -1,4 +1,4 @@
-import { Box, Button, Header, Heading, Main } from 'grommet';
+import { Box, Button, Header, Heading, Image, Main } from 'grommet';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useContractRead } from 'wagmi';
 import contracts from '../contracts/hardhat_contracts.json';
@@ -35,15 +35,17 @@ export const Layout = ({ children }: Props) => {
   return (
     <Box>
       <Header
-        direction="row"
+        direction="row-responsive"
         align="center"
-        justify="end"
+        justify="between"
         pad={{ vertical: 'small', horizontal: 'xlarge' }}
         border="bottom"
         gap="xlarge"
-        background="#FFFFFF"
-        height="xsmall"
+        background="#0054c8"
       >
+        <Box width="xsmall">
+          <Image src='images/logo_white.png' />
+        </Box>
         <Box direction="row" gap="small">
           <Button primary label="Home" href="/" />
 
@@ -63,7 +65,7 @@ export const Layout = ({ children }: Props) => {
         <ConnectButton />
       </Header>
       <Main>
-        <Box align="center" justify="center" height="100vh">
+        <Box align="center" justify="start" height="100vh" pad={{top: '40px'}}>
           {children}
         </Box>
       </Main>

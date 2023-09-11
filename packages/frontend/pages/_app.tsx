@@ -50,7 +50,7 @@ export const { chains, publicClient, webSocketPublicClient } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'CreDrex',
+  appName: 'PiTuPy',
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
   chains,
 });
@@ -75,7 +75,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           theme={lightTheme({ accentColor: '#01a982' })}
         >
           <NextHead>
-            <title>CreDrex App</title>
+            <title>PiTuPy App</title>
             <meta name="description" content="Drex Lending Protocol" />
             <link rel="icon" href="/favicon.ico" />
           </NextHead>
