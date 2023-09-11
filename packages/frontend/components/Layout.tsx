@@ -51,7 +51,10 @@ export const Layout = ({ children }: Props) => {
         </Box>
         <Heading level="4">
           {' '}
-          Balance: {data ? formatUnits(data, 18) : '0'} wBRL
+          Balance: {data
+            ? formatUnits(data as unknown as bigint, 18)
+            : '0'}{' '}
+          wBRL
         </Heading>
 
         <Heading level="4">

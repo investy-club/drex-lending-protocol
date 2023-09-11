@@ -116,6 +116,7 @@ export default function Home() {
                 onClick={() =>
                   writeApprove({
                     args: [
+                      // @ts-ignore
                       contracts[NETWORK_ID][0].contracts.CreDrex.address,
                       parseUnits(amount.toString(), 18),
                     ],
