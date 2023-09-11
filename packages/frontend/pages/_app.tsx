@@ -7,7 +7,6 @@ import { hpe } from 'grommet-theme-hpe';
 
 // Imports
 import { WagmiConfig, configureChains, createConfig } from 'wagmi';
-import { hardhat } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 
 import '@rainbow-me/rainbowkit/styles.css';
@@ -42,7 +41,7 @@ export const bitfinity = {
 } as const satisfies Chain;
 
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [bitfinity, hardhat],
+  [bitfinity],
   [publicProvider()]
 );
 

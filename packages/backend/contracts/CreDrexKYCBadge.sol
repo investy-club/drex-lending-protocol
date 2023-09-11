@@ -6,7 +6,7 @@ import "erc721a/contracts/extensions/ERC721ABurnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
 
-contract InvestyClubKYCBadge is ERC721A, ERC721ABurnable, Ownable {
+contract CreDrexKYCBadge is ERC721A, ERC721ABurnable, Ownable {
     address private signer;
     string public uri;
     mapping(string => bool[]) private hashes;

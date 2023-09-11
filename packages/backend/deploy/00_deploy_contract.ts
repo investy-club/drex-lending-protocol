@@ -9,8 +9,19 @@ const main: DeployFunction = async function ({
   const { deployer } = await getNamedAccounts();
 
   const args = ['0xE6520dC955DD9388C221ca3fA8704dCF6a78AAf6', 'ipfs://', 2];
-  await deploy('InvestyClubKYCBadge', {
+  const creDrexKYCBadge = await deploy('CreDrexKYCBadge', {
     args: args,
+    from: deployer,
+    log: true,
+  });
+
+  const wBRL = await deploy('WrappedBRL', {
+    from: deployer,
+    log: true,
+  });
+
+  const creDrex = await deploy('CreDrex', {
+    args: [wBRL.address, creDrexKYCBadge.address],
     from: deployer,
     log: true,
   });
@@ -18,4 +29,4 @@ const main: DeployFunction = async function ({
 
 export default main;
 
-export const tags = ['all', 'fLockKYCBadge'];
+export const tags = ['all', 'CreDrexKYCBadge', 'CreDrex', 'WrappedBRL'];

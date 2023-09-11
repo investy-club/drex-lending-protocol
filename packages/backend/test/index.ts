@@ -4,13 +4,13 @@ import { ethers, config } from 'hardhat';
 import EthCrypto from 'eth-crypto';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
-describe('InvestyClubKYCBadge', function () {
+describe('CreDrexKYCBadge', function () {
   let owner: SignerWithAddress,
     signer: SignerWithAddress,
     minter: SignerWithAddress,
     minter2: SignerWithAddress,
     minter3: SignerWithAddress;
-  let investyClubKYCBadge: Contract;
+  let creDrexKYCBadge: Contract;
   const mintHash1 = 'f26d60305dae929ef8640a75e70dd78ab809cfe9';
 
   const getSignature = (wallet: SignerWithAddress, mintHash: string) => {
@@ -40,95 +40,93 @@ describe('InvestyClubKYCBadge', function () {
     minter2 = signers[3];
     minter3 = signers[4];
 
-    const InvestyClubKYCBadge = await ethers.getContractFactory(
-      'InvestyClubKYCBadge'
-    );
-    investyClubKYCBadge = await InvestyClubKYCBadge.deploy(
+    const CreDrexKYCBadge = await ethers.getContractFactory('CreDrexKYCBadge');
+    creDrexKYCBadge = await CreDrexKYCBadge.deploy(
       signer.address,
       'ipfs://<enter your cid here>',
       2
     );
-    await investyClubKYCBadge.deployed();
+    await creDrexKYCBadge.deployed();
   });
 
-  it('Should mint a InvestyClub KYC Badge', async function () {
-    await investyClubKYCBadge
+  it('Should mint a CreDrex KYC Badge', async function () {
+    await creDrexKYCBadge
       .connect(minter)
       .mint(1, mintHash1, getSignature(minter, mintHash1));
 
-    expect(await investyClubKYCBadge.balanceOf(minter.address)).to.equal(1);
-    expect(await investyClubKYCBadge.tokenURI(0)).to.equal(
+    expect(await creDrexKYCBadge.balanceOf(minter.address)).to.equal(1);
+    expect(await creDrexKYCBadge.tokenURI(0)).to.equal(
       'ipfs://<enter your cid here>'
     );
   });
 
-  it('Should mint and burn a InvestyClub KYC Badge', async function () {
-    await investyClubKYCBadge
+  it('Should mint and burn a CreDrex KYC Badge', async function () {
+    await creDrexKYCBadge
       .connect(minter)
       .mint(1, mintHash1, getSignature(minter, mintHash1));
 
-    expect(await investyClubKYCBadge.tokenURI(0)).to.equal(
+    expect(await creDrexKYCBadge.tokenURI(0)).to.equal(
       'ipfs://<enter your cid here>'
     );
 
-    await investyClubKYCBadge.connect(minter).burn(0);
+    await creDrexKYCBadge.connect(minter).burn(0);
 
-    expect(await investyClubKYCBadge.balanceOf(minter.address)).to.equal(0);
+    expect(await creDrexKYCBadge.balanceOf(minter.address)).to.equal(0);
   });
 
-  it('Should mint a Flock InvestyClub Badge if hash already used only once', async function () {
-    await investyClubKYCBadge
+  it('Should mint a CreDrex Badge if hash already used only once', async function () {
+    await creDrexKYCBadge
       .connect(minter)
       .mint(1, mintHash1, getSignature(minter, mintHash1));
 
-    expect(await investyClubKYCBadge.tokenURI(0)).to.equal(
+    expect(await creDrexKYCBadge.tokenURI(0)).to.equal(
       'ipfs://<enter your cid here>'
     );
 
-    investyClubKYCBadge
+    creDrexKYCBadge
       .connect(minter2)
       .mint(1, mintHash1, getSignature(minter2, mintHash1));
 
-    expect(await investyClubKYCBadge.tokenURI(1)).to.equal(
+    expect(await creDrexKYCBadge.tokenURI(1)).to.equal(
       'ipfs://<enter your cid here>'
     );
   });
 
-  it('Should NOT mint more than one InvestyClub KYC Badge for same wallet address', async function () {
-    await investyClubKYCBadge
+  it('Should NOT mint more than one CreDrex KYC Badge for same wallet address', async function () {
+    await creDrexKYCBadge
       .connect(minter)
       .mint(1, mintHash1, getSignature(minter, mintHash1));
 
-    expect(await investyClubKYCBadge.tokenURI(0)).to.equal(
+    expect(await creDrexKYCBadge.tokenURI(0)).to.equal(
       'ipfs://<enter your cid here>'
     );
 
     await expect(
-      investyClubKYCBadge
+      creDrexKYCBadge
         .connect(minter)
         .mint(1, mintHash1, getSignature(minter, mintHash1))
     ).to.be.revertedWith('Already minted');
   });
 
-  it('Should NOT mint a InvestyClub KYC Badge if hash already used', async function () {
-    await investyClubKYCBadge
+  it('Should NOT mint a CreDrex KYC Badge if hash already used', async function () {
+    await creDrexKYCBadge
       .connect(minter)
       .mint(1, mintHash1, getSignature(minter, mintHash1));
 
-    expect(await investyClubKYCBadge.tokenURI(0)).to.equal(
+    expect(await creDrexKYCBadge.tokenURI(0)).to.equal(
       'ipfs://<enter your cid here>'
     );
 
-    investyClubKYCBadge
+    creDrexKYCBadge
       .connect(minter2)
       .mint(1, mintHash1, getSignature(minter2, mintHash1));
 
-    expect(await investyClubKYCBadge.tokenURI(1)).to.equal(
+    expect(await creDrexKYCBadge.tokenURI(1)).to.equal(
       'ipfs://<enter your cid here>'
     );
 
     await expect(
-      investyClubKYCBadge
+      creDrexKYCBadge
         .connect(minter3)
         .mint(1, mintHash1, getSignature(minter3, mintHash1))
     ).to.be.revertedWith('Mint hash already existent');

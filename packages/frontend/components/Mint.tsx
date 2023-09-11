@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAccount, useContractWrite, useWaitForTransaction } from 'wagmi';
 import contracts from '../contracts/hardhat_contracts.json';
 import { NETWORK_ID } from '../config';
-import { Button, Image, Spinner, Text } from 'grommet';
+import { Button, Spinner, Text } from 'grommet';
 
 const Mint = () => {
   const { address } = useAccount();
@@ -12,9 +12,9 @@ const Mint = () => {
   const { data, isLoading, isSuccess, write, isError, error } =
     useContractWrite({
       // @ts-ignore
-      address: contracts[NETWORK_ID][0].contracts.InvestyClubKYCBadge.address,
+      address: contracts[NETWORK_ID][0].contracts.CreDrexKYCBadge.address,
       // @ts-ignore
-      abi: contracts[NETWORK_ID][0].contracts.InvestyClubKYCBadge.abi,
+      abi: contracts[NETWORK_ID][0].contracts.CreDrexKYCBadge.abi,
       functionName: 'mint',
     });
 
