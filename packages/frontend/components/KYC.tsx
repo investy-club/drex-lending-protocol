@@ -9,7 +9,7 @@ export const PersonaInquiry = dynamic(
   { ssr: false }
 );
 
-const KYC = () => {
+const KYC = ({ setIsMinted }: { setIsMinted: (minted: boolean) => void }) => {
   const { address } = useAccount();
   const [processing, setProcessing] = useState(true);
   const [inquiryId, setInquiryId] = useState();
@@ -58,7 +58,7 @@ const KYC = () => {
           <Button primary onClick={handleStartKYC} label="Iniciar KYC"></Button>
         )
       ) : (
-        <Mint />
+        <Mint setIsMinted={setIsMinted} />
       )}
     </>
   );

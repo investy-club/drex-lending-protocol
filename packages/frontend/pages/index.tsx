@@ -291,7 +291,7 @@ export default function Home() {
             </Box>
           </Box>
         ) : (
-          <KYC />
+          <KYC setIsMinted={setIsMinted} />
         )}
       </Box>
     </Layout>
