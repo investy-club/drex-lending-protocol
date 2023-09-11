@@ -1,5 +1,5 @@
 import { Layout } from '@/components/Layout';
-import { Box, Button, Heading, Text, TextInput } from 'grommet';
+import { Box, Button, Heading, Image, Spinner, Text, TextInput } from 'grommet';
 import {
   useAccount,
   useContractRead,
@@ -163,11 +163,28 @@ export default function Home() {
     }
   }, [isSuccess]);
 
+  const LoadingSpinner = (
+    <Box>
+      <Spinner size="small" />
+    </Box>
+  );
+
   return (
     <Layout>
       <Box>
         {!address ? (
-          <Text>Not connected</Text>
+          <Box align="center" justify="center" width="large" gap='16px'>
+            <Text color="#E15846" weight={600}>
+              Wallet not connected - Please (CONNECT WALLET)
+            </Text>
+            <Box fill>
+              <Image src="images/home-img.png" />
+            </Box>
+            <Text weight={400} textAlign='center'>
+            Pitupy is a DREX lending protocol designed to bring decentralized finance closer to our real world as a use case application.
+DREX, the digital version of the Brazilian currency, will be integrated into DeFi as a wrapped token.
+            </Text>
+          </Box>
         ) : isMinted ? (
           <Box gap="large">
             <Box>
