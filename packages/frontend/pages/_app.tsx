@@ -10,7 +10,11 @@ import { WagmiConfig, configureChains, createConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 
 import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import {
+  getDefaultWallets,
+  RainbowKitProvider,
+  lightTheme,
+} from '@rainbow-me/rainbowkit';
 
 import { useIsMounted } from '../hooks';
 import { Chain } from 'wagmi';
@@ -65,7 +69,11 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <Grommet theme={hpe}>
       <WagmiConfig config={configWagmi}>
-        <RainbowKitProvider coolMode chains={chains}>
+        <RainbowKitProvider
+          coolMode
+          chains={chains}
+          theme={lightTheme({ accentColor: '#01a982' })}
+        >
           <NextHead>
             <title>CreDrex App</title>
             <meta name="description" content="Drex Lending Protocol" />

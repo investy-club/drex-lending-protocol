@@ -225,7 +225,12 @@ export default function Home() {
               <Box direction="row" gap="xlarge">
                 <Box gap="medium" align="center">
                   <Heading>Lending</Heading>
-                  <Text>{formatEther(dataDepositRate as any)} APY</Text>
+                  <Text>
+                    {dataDepositRate
+                      ? formatEther(dataDepositRate as any)
+                      : '0'}{' '}
+                    APY
+                  </Text>
                   <Box direction="row" gap="medium">
                     <Button
                       primary
