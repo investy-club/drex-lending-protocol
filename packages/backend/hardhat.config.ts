@@ -5,8 +5,8 @@ import 'hardhat-deploy';
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-etherscan';
 
-dotenv.config({ path: '../../.env' });
-const defaultNetwork = 'localhost';
+dotenv.config({ path: '.env' });
+const defaultNetwork = 'testnet_bitfinity';
 
 /**
  * @type import('hardhat/config').HardhatUserConfig

@@ -1,0 +1,19 @@
+// schema.prisma
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
+}
+
+model PersonaInquiry {
+  id        String   @id @default(cuid())
+  wallet    String
+  inquiryId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

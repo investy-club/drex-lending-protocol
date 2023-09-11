@@ -1,28 +1,41 @@
-import Head from 'next/head';
-
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { GetGreeter, SetGreeter } from '../components/contract';
+import { Layout } from '@/components/Layout';
+import { Box, Text } from 'grommet';
+import { useAccount, useContractRead } from 'wagmi';
+import { NETWORK_ID } from '../config';
+import { useEffect, useState } from 'react';
+import contracts from '../contracts/hardhat_contracts.json';
+import KYC from '@/components/KYC';
 
 export default function Home() {
-  return (
-    <div className={''}>
-      <header style={{ padding: '1rem' }}>
-        <ConnectButton />
-      </header>
+  const { address } = useAccount();
+  const [isMinted, setIsMinted] = useState(false);
 
-      <main
-        style={{
-          minHeight: '60vh',
-          flex: '1',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <GetGreeter />
-        <SetGreeter />
-      </main>
-    </div>
+  const { data, isSuccess } = useContractRead({
+    // @ts-ignore
+    address: contracts[NETWORK_ID][0].contracts.InvestyClubKYCBadge.address,
+    // @ts-ignore
+    abi: contracts[NETWORK_ID][0].contracts.InvestyClubKYCBadge.abi,
+    functionName: 'balanceOf',
+    args: [address],
+  });
+
+  useEffect(() => {
+    if (Number(data) > 0) {
+      setIsMinted?.(true);
+    }
+  }, [isSuccess]);
+
+  return (
+    <Layout>
+      <Box>
+        {!address ? (
+          <Text>Not connected</Text>
+        ) : isMinted ? (
+          <Text>You are minted</Text>
+        ) : (
+          <KYC />
+        )}
+      </Box>
+    </Layout>
   );
 }

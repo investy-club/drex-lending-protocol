@@ -3,9 +3,10 @@ import type { AppProps } from 'next/app';
 import NextHead from 'next/head';
 import '../styles/globals.css';
 import { Grommet } from 'grommet';
+import { hpe } from 'grommet-theme-hpe';
 
 // Imports
-import { createClient, WagmiConfig, configureChains } from 'wagmi';
+import { WagmiConfig, configureChains, createConfig } from 'wagmi';
 import { hardhat } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 
@@ -18,7 +19,7 @@ import { Chain } from 'wagmi';
 export const bitfinity = {
   id: 355113,
   name: 'Bitfinity TestNet',
-  network: 'avalanche',
+  network: 'bitfinity',
   nativeCurrency: {
     decimals: 18,
     name: 'Bitfinity',
@@ -40,21 +41,22 @@ export const bitfinity = {
   },
 } as const satisfies Chain;
 
-const { chains, provider, webSocketProvider } = configureChains(
+export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [bitfinity, hardhat],
   [publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({
   appName: 'CreDrex',
+  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
   chains,
 });
 
-const wagmiClient = createClient({
+const configWagmi = createConfig({
   autoConnect: true,
   connectors,
-  provider,
-  webSocketProvider,
+  publicClient,
+  webSocketPublicClient,
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
@@ -62,8 +64,8 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   if (!isMounted) return null;
   return (
-    <Grommet full>
-      <WagmiConfig client={wagmiClient}>
+    <Grommet theme={hpe}>
+      <WagmiConfig config={configWagmi}>
         <RainbowKitProvider coolMode chains={chains}>
           <NextHead>
             <title>CreDrex App</title>
