@@ -92,13 +92,15 @@ export default function Home() {
     watch: true,
   });
 
-  const { data: dataApprove, write: writeApprove } = useContractWrite({
-    // @ts-ignore
-    address: contracts[NETWORK_ID][0].contracts.WrappedBRL.address,
-    // @ts-ignore
-    abi: contracts[NETWORK_ID][0].contracts.WrappedBRL.abi,
-    functionName: 'approve',
-  });
+  const { data: dataApprove, writeAsync: writeAsyncApprove } = useContractWrite(
+    {
+      // @ts-ignore
+      address: contracts[NETWORK_ID][0].contracts.WrappedBRL.address,
+      // @ts-ignore
+      abi: contracts[NETWORK_ID][0].contracts.WrappedBRL.abi,
+      functionName: 'approve',
+    }
+  );
 
   const { isSuccess: isSuccessApprove, isLoading: isLoadingApproveTx } =
     useWaitForTransaction({
@@ -173,16 +175,18 @@ export default function Home() {
     <Layout>
       <Box>
         {!address ? (
-          <Box align="center" justify="center" width="large" gap='16px'>
+          <Box align="center" justify="center" width="large" gap="16px">
             <Text color="#E15846" weight={600}>
               Wallet not connected - Please (CONNECT WALLET)
             </Text>
             <Box fill>
               <Image src="images/home-img.png" />
             </Box>
-            <Text weight={400} textAlign='center'>
-            Pitupy is a DREX lending protocol designed to bring decentralized finance closer to our real world as a use case application.
-DREX, the digital version of the Brazilian currency, will be integrated into DeFi as a wrapped token.
+            <Text weight={400} textAlign="center">
+              Pitupy is a DREX lending protocol designed to bring decentralized
+              finance closer to our real world as a use case application. DREX,
+              the digital version of the Brazilian currency, will be integrated
+              into DeFi as a wrapped token.
             </Text>
           </Box>
         ) : isMinted ? (
@@ -223,21 +227,6 @@ DREX, the digital version of the Brazilian currency, will be integrated into DeF
                   placeholder="Amount"
                   onChange={(e) => setAmount(Number(e.target.value))}
                 />
-                <Button
-                  primary
-                  label="Approve"
-                  onClick={() =>
-                    writeApprove({
-                      args: [
-                        // @ts-ignore
-                        contracts[NETWORK_ID][0].contracts.CreDrex.address,
-                        parseUnits(amount.toString(), 18),
-                      ],
-                      // @ts-ignore
-                      from: address,
-                    })
-                  }
-                />
               </Box>
               <Box direction="row" gap="xlarge">
                 <Box gap="medium" align="center">
@@ -252,13 +241,23 @@ DREX, the digital version of the Brazilian currency, will be integrated into DeF
                     <Button
                       primary
                       label="Deposit"
-                      onClick={() =>
+                      onClick={async () => {
+                        await writeAsyncApprove({
+                          args: [
+                            // @ts-ignore
+                            contracts[NETWORK_ID][0].contracts.CreDrex.address,
+                            parseUnits(amount.toString(), 18),
+                          ],
+                          // @ts-ignore
+                          from: address,
+                        });
+
                         writeDeposit({
                           args: [parseUnits(amount.toString(), 18)],
                           // @ts-ignore
                           from: address,
-                        })
-                      }
+                        });
+                      }}
                     />
                     <Button
                       primary
@@ -294,13 +293,22 @@ DREX, the digital version of the Brazilian currency, will be integrated into DeF
                     <Button
                       primary
                       label="Repay"
-                      onClick={() =>
+                      onClick={async () => {
+                        await writeAsyncApprove({
+                          args: [
+                            // @ts-ignore
+                            contracts[NETWORK_ID][0].contracts.CreDrex.address,
+                            parseUnits(amount.toString(), 18),
+                          ],
+                          // @ts-ignore
+                          from: address,
+                        });
                         writeRepay({
                           args: [parseUnits(amount.toString(), 18)],
                           // @ts-ignore
                           from: address,
-                        })
-                      }
+                        });
+                      }}
                     />
                   </Box>
                 </Box>
